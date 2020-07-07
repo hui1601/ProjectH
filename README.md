@@ -1,4 +1,4 @@
-# Just Monika</s>
+# Just Hina</s>
 
 © 2020 Dark Tornado, Hibot All rights reserved.
 
@@ -14,6 +14,6 @@
  ex) 이 봇은 Dark Tornado의 모카 소스의 포크인 Hibot을 사용하였습니다.
 
 ### 배포용 버전 목록
-[Hibot](https://raw.githubusercontent.com/hui1601/ProjectM/master/Hibot.js)
+[Hina](https://raw.githubusercontent.com/hui1601/ProjectM/master/Hibot.js)
 ### 비고
 - 넘모 무서운 거시에오.
