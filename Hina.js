@@ -204,18 +204,18 @@ function procCmd(cmd, room, isGroupChat, r, sender) {
 			botOn[room] = true;
 			break;
 		case "/off":
-			if(sender == "Hina"){
+			if(sender == "Hibot"){
 				Hina.say("Hina이 봉인되었습니다", r);
 				botOn[room] = false;
 			}
 			else
 				Hina.say("嫌い！");
 			break;
-		case "/Hina":
-			Hina.say("봇 이름: Hina\n버전: 3.1\n원작자: Dark Tornado\n봇주: 비밀\n\n사람처럼 대화하기 싫은 봇\nFork From Project M - Moka(모카)", r);
+		case "/hina":
+			Hina.say("[예전부터 계속 좋아했어!]\n봇 이름: Hina\n버전: 3.1\n원작자: Dark Tornado\n봇주: Hibot\n반가워~! 나는 세토구치 히나야!\nFork From Project M - Moka(모카)", r);
 			break;
 		case "/help":
-			Hina.say("Hina의 명령어 목록입니다.\n /on - Hina을 활성화시킵니다.\n /off - Hina을 비활성화시킵니다.\n/Hina - Hina의 정보를 띄웁니다.\n/help - 설마 모르겠어?\n/DB - 해당 채팅방에서 배운 채팅들의 수 출력", r);
+			Hina.say("Hina의 명령어 목록입니다.\n/on - Hina을 활성화시킵니다.\n/off - Hina을 비활성화시킵니다.\n/hina - Hina의 정보를 띄웁니다.\n/help - 설마 모르겠어?\n/DB - 해당 채팅방에서 배운 채팅들의 수 출력", r);
 			break;
 		case "/DB":
 			if (isGroupChat) {
