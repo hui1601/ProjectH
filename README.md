@@ -14,6 +14,6 @@
  ex) 이 봇은 Dark Tornado의 모니카 소스를 사용하였습니다.
 
 ### 배포용 버전 목록
-
+[Hibot](https://raw.githubusercontent.com/hui1601/ProjectM/master/Hibot.js)
 ### 비고
 - 넘모 무서운 거시에오.
