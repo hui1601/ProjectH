@@ -11,7 +11,7 @@
 
 ### 가이드라인
 * 소스 사용시 원작자를 밝혀주세요.<br>
- ex) 이 봇은 Dark Tornado의 모카 소스의 포크인 Hibot을 사용하였습니다.
+ ex) 이 봇은 Dark Tornado의 모카 소스의 포크인 Hina을 사용하였습니다.
 
 ### 배포용 버전 목록
 [Hina](https://raw.githubusercontent.com/hui1601/ProjectM/master/Hibot.js)
