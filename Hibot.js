@@ -158,7 +158,7 @@ function response(room, msg, sender, isGroupChat, replier) {
 	preChat[room] = msg;
 
 	/*봇 작동여부 결정 및 명령어 처리*/
-	procCmd(msg, room, isGroupChat, replier);
+	procCmd(msg, room, isGroupChat, replier, sender);
 	if (botOn[room] === undefined) botOn[room] = true;
 	if (botOn[room] == false) return;
 
