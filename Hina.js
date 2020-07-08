@@ -46,26 +46,26 @@ const botOn = {}; //봇 작동여부 설정용
 /*변수 선언*/
 var chatData = []; //1:1 채팅방에서 사용할 대화 목록이 저장될 배열
 toKorChars = function(str) {//https://link.medium.com/BGbSELtNU7
-    var cCho = [ 'ㄱ', 'ㄲ', 'ㄴ', 'ㄷ', 'ㄸ', 'ㄹ', 'ㅁ', 'ㅂ', 'ㅃ', 'ㅅ', 'ㅆ', 'ㅇ', 'ㅈ', 'ㅉ', 'ㅊ', 'ㅋ', 'ㅌ', 'ㅍ', 'ㅎ' ], cJung = [ 'ㅏ', 'ㅐ', 'ㅑ', 'ㅒ', 'ㅓ', 'ㅔ', 'ㅕ', 'ㅖ', 'ㅗ', 'ㅘ', 'ㅙ', 'ㅚ', 'ㅛ', 'ㅜ', 'ㅝ', 'ㅞ', 'ㅟ', 'ㅠ', 'ㅡ', 'ㅢ', 'ㅣ' ], cJong = [ '', 'ㄱ', 'ㄲ', 'ㄳ', 'ㄴ', 'ㄵ', 'ㄶ', 'ㄷ', 'ㄹ', 'ㄺ', 'ㄻ', 'ㄼ', 'ㄽ', 'ㄾ', 'ㄿ', 'ㅀ', 'ㅁ', 'ㅂ', 'ㅄ', 'ㅅ', 'ㅆ', 'ㅇ', 'ㅈ', 'ㅊ', 'ㅋ', 'ㅌ', 'ㅍ', 'ㅎ' ], cho, jung, jong; 
-    var cnt = str.length, chars = [], cCode; 
-    for (var i = 0; i < cnt; i++) { 
-       cCode = str.charCodeAt(i); 
-       if (cCode == 32) { continue; } // 한글이 아닌 경우 
-       if (cCode < 0xAC00 || cCode > 0xD7A3) {
-            chars.push(str.charAt(i)); 
-            continue; 
-       } 
-       cCode = str.charCodeAt(i) - 0xAC00; 
-       jong = cCode % 28; // 종성 
-       jung = ((cCode - jong) / 28 ) % 21; // 중성 
-       cho = (((cCode - jong) / 28 ) - jung ) / 21; // 초성 
- 
-       chars.push(cCho[cho], cJung[jung]); 
-       if (cJong[jong] !== '') { 
-          chars.push(cJong[jong]); 
-       } 
-    }
-    return chars; 
+	var cCho = [ 'ㄱ', 'ㄲ', 'ㄴ', 'ㄷ', 'ㄸ', 'ㄹ', 'ㅁ', 'ㅂ', 'ㅃ', 'ㅅ', 'ㅆ', 'ㅇ', 'ㅈ', 'ㅉ', 'ㅊ', 'ㅋ', 'ㅌ', 'ㅍ', 'ㅎ' ], cJung = [ 'ㅏ', 'ㅐ', 'ㅑ', 'ㅒ', 'ㅓ', 'ㅔ', 'ㅕ', 'ㅖ', 'ㅗ', 'ㅘ', 'ㅙ', 'ㅚ', 'ㅛ', 'ㅜ', 'ㅝ', 'ㅞ', 'ㅟ', 'ㅠ', 'ㅡ', 'ㅢ', 'ㅣ' ], cJong = [ '', 'ㄱ', 'ㄲ', 'ㄳ', 'ㄴ', 'ㄵ', 'ㄶ', 'ㄷ', 'ㄹ', 'ㄺ', 'ㄻ', 'ㄼ', 'ㄽ', 'ㄾ', 'ㄿ', 'ㅀ', 'ㅁ', 'ㅂ', 'ㅄ', 'ㅅ', 'ㅆ', 'ㅇ', 'ㅈ', 'ㅊ', 'ㅋ', 'ㅌ', 'ㅍ', 'ㅎ' ], cho, jung, jong; 
+	var cnt = str.length, chars = [], cCode; 
+	for (var i = 0; i < cnt; i++) { 
+		cCode = str.charCodeAt(i); 
+		if (cCode == 32) { continue; } // 한글이 아닌 경우 
+		if (cCode < 0xAC00 || cCode > 0xD7A3) {
+			chars.push(str.charAt(i)); 
+			continue; 
+		} 
+		cCode = str.charCodeAt(i) - 0xAC00; 
+		jong = cCode % 28; // 종성 
+		jung = ((cCode - jong) / 28 ) % 21; // 중성 
+		cho = (((cCode - jong) / 28 ) - jung ) / 21; // 초성 
+
+		chars.push(cCho[cho], cJung[jung]); 
+		if (cJong[jong] !== '') { 
+			chars.push(cJong[jong]); 
+		} 
+	}
+	return chars; 
 }
 function randInt(min, max) {
 	min = Math.ceil(min);
@@ -102,7 +102,7 @@ Hina.isValidData = function(msg) { //배울 만한 채팅인지
 	for (var n = 0; n < invalids.length; n++) {
 		if (msg.startsWith(invalids[n])) return false; //특정 문자로 시작하는 것은 학습 X.	
 	}
-	var noStudy = ["\'", "\"", "[", "]", "{", "}", "⎼", ".com", ".tk", ".org", ".kr", ".net", ".xxx", ".gov", "<", ">", "_", "҉", "\\", " 보냈습니다."];
+	var noStudy = ["͆", "͐", "̷", "͆", "̂", "̥", "҉", "\'", "\"", "[", "]", "{", "}", "⎼", ".com", ".tk", ".org", ".kr", ".net", ".xxx", ".gov", "<", ">", "_", "\\", " 보냈습니다."];
 	for (var n = 0; n < noStudy.length; n++) {
 		if (msg.indexOf(noStudy[n]) != -1) return false;
 	}
