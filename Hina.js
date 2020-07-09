@@ -46,26 +46,39 @@ const botOn = {}; //봇 작동여부 설정용
 /*변수 선언*/
 var chatData = []; //1:1 채팅방에서 사용할 대화 목록이 저장될 배열
 toKorChars = function(str) {//https://link.medium.com/BGbSELtNU7
-	var cCho = [ 'ㄱ', 'ㄲ', 'ㄴ', 'ㄷ', 'ㄸ', 'ㄹ', 'ㅁ', 'ㅂ', 'ㅃ', 'ㅅ', 'ㅆ', 'ㅇ', 'ㅈ', 'ㅉ', 'ㅊ', 'ㅋ', 'ㅌ', 'ㅍ', 'ㅎ' ], cJung = [ 'ㅏ', 'ㅐ', 'ㅑ', 'ㅒ', 'ㅓ', 'ㅔ', 'ㅕ', 'ㅖ', 'ㅗ', 'ㅘ', 'ㅙ', 'ㅚ', 'ㅛ', 'ㅜ', 'ㅝ', 'ㅞ', 'ㅟ', 'ㅠ', 'ㅡ', 'ㅢ', 'ㅣ' ], cJong = [ '', 'ㄱ', 'ㄲ', 'ㄳ', 'ㄴ', 'ㄵ', 'ㄶ', 'ㄷ', 'ㄹ', 'ㄺ', 'ㄻ', 'ㄼ', 'ㄽ', 'ㄾ', 'ㄿ', 'ㅀ', 'ㅁ', 'ㅂ', 'ㅄ', 'ㅅ', 'ㅆ', 'ㅇ', 'ㅈ', 'ㅊ', 'ㅋ', 'ㅌ', 'ㅍ', 'ㅎ' ], cho, jung, jong; 
-	var cnt = str.length, chars = [], cCode; 
-	for (var i = 0; i < cnt; i++) { 
-		cCode = str.charCodeAt(i); 
-		if (cCode == 32) { continue; } // 한글이 아닌 경우 
+	var cCho = [ 'ㄱ', 'ㄲ', 'ㄴ', 'ㄷ', 'ㄸ',
+		'ㄹ', 'ㅁ', 'ㅂ', 'ㅃ', 'ㅅ',
+		'ㅆ', 'ㅇ', 'ㅈ', 'ㅉ', 'ㅊ',
+		'ㅋ', 'ㅌ', 'ㅍ', 'ㅎ' ], 
+		cJung = [ 'ㅏ', 'ㅐ', 'ㅑ', 'ㅒ', 'ㅓ',
+		'ㅔ', 'ㅕ', 'ㅖ', 'ㅗ', 'ㅘ',
+		'ㅙ', 'ㅚ', 'ㅛ', 'ㅜ', 'ㅝ',
+		'ㅞ', 'ㅟ', 'ㅠ', 'ㅡ', 'ㅢ',
+		'ㅣ' ], 
+		cJong = [ '', 'ㄱ', 'ㄲ', 'ㄳ', 'ㄴ',
+		'ㄵ', 'ㄶ', 'ㄷ', 'ㄹ', 'ㄺ',
+		'ㄻ', 'ㄼ', 'ㄽ', 'ㄾ', 'ㄿ',
+		'ㅀ', 'ㅁ', 'ㅂ', 'ㅄ', 'ㅅ',
+		'ㅆ', 'ㅇ', 'ㅈ', 'ㅊ', 'ㅋ',
+		'ㅌ', 'ㅍ', 'ㅎ' ], cho, jung, jong;
+	var cnt = str.length, chars = [], cCode;
+	for (var i = 0; i < cnt; i++) {
+		cCode = str.charCodeAt(i);
+		if (cCode == 32) { continue; }//한글이 아닌 경우
 		if (cCode < 0xAC00 || cCode > 0xD7A3) {
-			chars.push(str.charAt(i)); 
-			continue; 
-		} 
-		cCode = str.charCodeAt(i) - 0xAC00; 
-		jong = cCode % 28; // 종성 
-		jung = ((cCode - jong) / 28 ) % 21; // 중성 
-		cho = (((cCode - jong) / 28 ) - jung ) / 21; // 초성 
-
-		chars.push(cCho[cho], cJung[jung]); 
-		if (cJong[jong] !== '') { 
-			chars.push(cJong[jong]); 
-		} 
+			chars.push(str.charAt(i));
+			continue;
+		}
+		cCode = str.charCodeAt(i) - 0xAC00;
+		jong = cCode % 28;//종성
+		jung = ((cCode - jong) / 28 ) % 21;//중성
+		cho = (((cCode - jong) / 28 ) - jung ) / 21;//초성
+		chars.push(cCho[cho], cJung[jung]);
+		if (cJong[jong] !== '') {
+			chars.push(cJong[jong]);
+		}
 	}
-	return chars; 
+	return chars;
 }
 function randInt(min, max) {
 	min = Math.ceil(min);
@@ -74,12 +87,18 @@ function randInt(min, max) {
 }
 /*Hina 객체*/
 Hina.checkWord = function(que, msg) { //적당히 비슷한 말인지 비교
-	return levenshtein.get(toKorChars(que).join(), toKorChars(msg).join());
+	let que_kor = toKorChars(que).join(), msg_kor = toKorChars(msg).join();//한글을 쓱싹쓱싹 분해
+	let distance = levenshtein.get(que_kor, msg_kor);//거리분석
+	let max_distance = Math.max(que_kor.length, msg_kor.length) / 2;//가장 큰 거리값(50%이상 일치)
+	if(max_distance >= distance) {//맞는지는 모르겠지만 이러면 될 듯
+		return distance;
+	}
+	return Number.MAX_SAFE_INTEGER;//일치하지 않다고 봄
 };
 Hina.getReply = function(room, msg, data) { //수신된 채팅에 대한 적당한 답변 반환
 	if (data != null) { //저장된 채팅이 없으면 작동 안함
 		var result = []; //비슷한 말들이 들어갈 배열
-		var min = 10000; //최대 유사도 값
+		var min = Number.MAX_SAFE_INTEGER - 1; //최대 유사도 값, Number.MAX_SAFE_INTEGER로 지정되는 것은 말해선 안될 것
 		for (var n = 0; n < data.length - 1; n++) { //저장된 채팅들 중 비슷하다 싶은 녀석들을 배열에 넣을건데,
 			var count = Hina.checkWord(data[n], msg); //유사도(?)를 가져와서
 			if (count < min) { //기존에 확인했던 녀석들보다 유사도가 낮으면, 결과 배열 초기화 및 최소 유사도 값 변경
@@ -102,7 +121,12 @@ Hina.isValidData = function(msg) { //배울 만한 채팅인지
 	for (var n = 0; n < invalids.length; n++) {
 		if (msg.startsWith(invalids[n])) return false; //특정 문자로 시작하는 것은 학습 X.	
 	}
-	var noStudy = ["͆", "͐", "̷", "͆", "̂", "̥", "҉", "\'", "\"", "[", "]", "{", "}", "⎼", ".com", ".tk", ".org", ".kr", ".net", ".xxx", ".gov", "<", ">", "_", "\\", " 보냈습니다."];
+	var noStudy = ["͆", "͐", "̷", "͆", "̂",
+		"̥", "҉", "\'", "\"","[",
+		"]", "{", "}", "⎼", ".com",
+		".tk", ".org", ".kr", ".net", ".xxx",
+		".gov", "<", ">", "_", "\\",
+		" 보냈습니다.", "\n"];
 	for (var n = 0; n < noStudy.length; n++) {
 		if (msg.indexOf(noStudy[n]) != -1) return false;
 	}
@@ -170,10 +194,11 @@ function response(room, msg, sender, isGroupChat, replier) {
 
 	/*1:1 채팅방은 냠 쩝쩝쩝*/
 	if (!isGroupChat) {
+		replier.reply("");
 		return;
 	}
 	/*적당한 채팅 하나 가져와서 답장(?)하는 부분*/
-	if (randInt(1, 20) == 1) { //5% 확률로 작동
+	if (randInt(1, 100) == 1) { //1% 확률로 작동
 		var data = DB.readData(room); //저장된 채팅들을 불러옴
 		var chat = Hina.getReply(room, msg, data.split("\n")); //적당한거 하나 가져와서
 		if (chat != null) Hina.say(chat, replier); //전송
@@ -200,22 +225,24 @@ function response(room, msg, sender, isGroupChat, replier) {
 function procCmd(cmd, room, isGroupChat, r, sender) {
 	switch (cmd) {
 		case "/on":
-			Hina.say("Hina이 자유가 되었습니다.", r);
+			Hina.say("흐아암~", r);
+			Hina.say("잘잤다", r);
 			botOn[room] = true;
 			break;
 		case "/off":
 			if(sender == "Hibot"){
-				Hina.say("Hina이 봉인되었습니다", r);
+				Hina.say("졸려...", r);
 				botOn[room] = false;
 			}
-			else
-				Hina.say("嫌い！");
+			else{
+				Hina.say("嫌い！", r);
+			}
 			break;
 		case "/hina":
 			Hina.say("[예전부터 계속 좋아했어!]\n봇 이름: Hina\n버전: 3.1\n원작자: Dark Tornado\n봇주: Hibot\n반가워~! 나는 세토구치 히나야!\nFork From Project M - Moka(모카)", r);
 			break;
 		case "/help":
-			Hina.say("Hina의 명령어 목록입니다.\n/on - Hina을 활성화시킵니다.\n/off - Hina을 비활성화시킵니다.\n/hina - Hina의 정보를 띄웁니다.\n/help - 설마 모르겠어?\n/DB - 해당 채팅방에서 배운 채팅들의 수 출력", r);
+			Hina.say("Hina의 명령어 목록입니다.\n/on - Hina를 활성화시킵니다.\n/off - Hina를 비활성화시킵니다.\n/hina - Hina의 정보를 띄웁니다.\n/help - 설마 모르겠어?\n/DB - 해당 채팅방에서 배운 채팅들의 수 출력", r);
 			break;
 		case "/DB":
 			if (isGroupChat) {
