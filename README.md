@@ -14,6 +14,8 @@
  ex) 이 봇은 Dark Tornado의 모카 소스의 포크인 Hina를 사용하였습니다.
 
 ### 배포용 버전 목록
-[Hina](https://raw.githubusercontent.com/hui1601/ProjectM/master/Hina.js)
+* [일반버전](https://raw.githubusercontent.com/hui1601/ProjectM/master/Hina.js)<br>
+* Telegram 버전 hunhee@kakao.com으로 문의<br>
+* Node-Kakao 버전 배포불가<br>
 ### 비고
-- 넘모 무서운 거시에오.
+- 넘모 무거운 거시에오.
