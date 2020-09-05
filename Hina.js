@@ -3,7 +3,7 @@ Project - M
 5th Open Source : Moka
 © 2018 Dark Tornado, All rights reserved.
 <작동 방식>
-1. 채팅방에서 사람들이 하는 채팅을 '내장메모리/Hina/' 폴더에 '방이름.txt' 파일로 저장.
+1. 채팅방에서 사람들이 하는 채팅을 '내장메모리/Hina/' 폴더에 'DB.json' 파일로 저장.
   -> 각 채팅들은 JSON으로 구분합니다.
   -> 학습 및 채팅 전송은 채팅방마다 따로따로 작동합니다.
 2. 해당 채팅방에서 채팅이 수신되면 10% 확률로 수신된 채팅과 파일 안에 있는 채팅의 유사도를 대충 검사.
@@ -40,7 +40,7 @@ const sdcard = android.os.Environment.getExternalStorageDirectory().getAbsoluteP
 const Hina = {}; //Hina 관련 객체
 const DB = {}; //파일 입/출력용 객제인데, 이름이 DB인건 기분탓
 const preChat = {};//이전체팅
-const learn = {};//대충 배운단어들
+var learn = {};//대충 배운단어들
 
 toKorChars = function(str) {//https://link.medium.com/BGbSELtNU7 대충 한글 분해
 	let cCho = [ 'ㄱ', 'ㄲ', 'ㄴ', 'ㄷ', 'ㄸ',
@@ -135,20 +135,17 @@ Hina.isValidData = function(msg) { //배울 만한 채팅인지
 };
 
 /*DB 객체*/
-DB.createDir = function() { //배운 채팅들이 저장될 폴더를 만드는 함수
-	let folder = new java.io.File(sdcard + '/Hina/'); //File 인스턴스 생성
-	folder.mkdirs(); //폴더 생성
-};
-DB.saveData = function(path, content) { //파일에 내용을 저장하는 함수
-	FileStream.write(path, content);
+
+DB.saveData = function(content) { //파일에 내용을 저장하는 함수
+	FileStream.write(sdcard + "/Hina/DB.json", content);
 };
 DB.readData = function(path) { //파일에 저장된 내용을 불러오는 함수
-    FileStream.read(path);
+    return FileStream.read(sdcard + "/Hina/DB.json");
 };
 
 
 /*전역에서 실행할 것들*/
-DB.createDir(); //폴더 생성
+learn = JSON.parse(DB.readData());
 
 /*response 부분*/
 function response(room, msg, sender, isGroupChat, replier) {
