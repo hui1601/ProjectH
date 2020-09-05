@@ -155,19 +155,19 @@ function response(room, msg, sender, isGroupChat, replier) {
     if(typeof preChat[room] === 'undefined') preChat[room] = {};
     /*봇 작동여부 결정 및 명령어 처리*/
     if(typeof learn[room] === 'undefined') learn[room] = [];
-    let senderBlackList = ['[Bot]', '[AI]', '개소리봇', '𝔅𝔬𝔱', '𝕭𝖔𝖙', '𝔹𝕠𝕥'];//전송자 닉넴에 이런거 들어있으면 벤(?)
+    let senderBlackList = ['[Bot]', '[AI]', '개소리봇', '𝔅𝔬𝔱', '𝕭𝖔𝖙', '𝔹𝕠𝕥', 'Bot'];//전송자 닉넴에 이런거 들어있으면 벤(?)
 	for (let n = 0; n < senderBlackList.length; n++) {
 		if (msg.includes(senderBlackList[n])) return;
 	}
-    procCmd(msg, room, chat);
+    procCmd(msg, room, replier);
     /*적당한 채팅 하나 가져와서 답장(?)하는 부분*/
     if (randInt(1, 10) == 1) { //2% 확률로 작동
         let data = learn[room]; //저장된 채팅들을 불러옴
         let reply = Hina.getReply(msg, data); //적당한거 하나 가져와서
         do{
-            console.log(reply);
+            Log.debug(JSON.stringify(reply));
             if (reply != null)
-                Hina.say(reply.msg, chat); //전송
+                Hina.say(reply.msg, replier); //전송
             else break;
             if(data.length <= reply.pos + 1) break;
             reply = Object.assign(data[reply.pos + 1], {'pos': reply.pos + 1});
